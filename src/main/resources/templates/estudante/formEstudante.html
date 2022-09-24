@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+
+    <title>Formulário Estudante</title>
+  </head>
+  <body class="bg-light">
+    <div class="container d-flex justify-content-center py-4">
+      <div class="rounded p-4" style="background-color: #fff; width: 100%; max-width: 500px">
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/estudante/getListaEstudantes">
+          Lista de Estudantes
+        </a>
+
+        <hr />
+
+        <h4 class="text-center mb-0">Formulário de Estudante</h4>
+
+        <br />
+
+        <form
+          action="#"
+          th:action="@{/estudante/addEstudante}"
+          th:object="${estudante}"
+          method="post"
+        >
+          <div class="form-group">
+            <label>Primeiro Nome:</label>
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{primeiroNome}"
+              placeholder="Insira seu nome"
+            />
+          </div>
+
+          <!--  -->
+
+          <div class="form-group">
+            <label>Último Nome:</label>
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{ultimoNome}"
+              placeholder="Insira seu nome"
+            />
+          </div>
+
+          <!--  -->
+
+          <div class="form-group">
+            <label>Curso:</label>
+            <select class="form-control" th:field="*{curso}">
+              <option th:each="curso: ${cursos}" th:value="${curso.id}" th:text="${curso.nome}">
+                Curso
+              </option>
+            </select>
+          </div>
+
+          <!--  -->
+
+          <p class="mt-2 mb-1">Linguagem:</p>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              th:field="*{linguagem}"
+              th:value="Java"
+              th:text="Java"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              th:field="*{linguagem}"
+              th:value="C"
+              th:text="C"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              th:field="*{linguagem}"
+              th:value="Python"
+              th:text="Python"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              th:field="*{linguagem}"
+              th:value="Javascript"
+              th:text="Javascript"
+            />
+          </div>
+
+          <!--  -->
+
+          <p class="mt-2 mb-1">Sistema:</p>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              th:field="*{sistemasOperacionas}"
+              th:value="OSX"
+              th:text="OSX"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              th:field="*{sistemasOperacionas}"
+              th:value="Windows"
+              th:text="Windows"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              th:field="*{sistemasOperacionas}"
+              th:value="Linux"
+              th:text="Linux"
+            />
+          </div>
+
+          <br />
+
+          <div class="text-right">
+            <button type="submit" class="btn btn-primary mb-2">Adicionar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
