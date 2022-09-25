@@ -4,44 +4,37 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.jeanlima.mvcapp.model.Curso;
+import com.jeanlima.mvcapp.repository.CursoRepository;
 
 @Component
 public class CursoServiceImpl implements CursoService {
 
-  public int idIterator = 4;
-  public List<Curso> cursos = new LinkedList<Curso>(
-      Arrays.asList(
-          new Curso(1, "BTI"),
-          new Curso(2, "Eng. Computação"),
-          new Curso(3, "Eng. Software")));
+  @Autowired
+  CursoRepository cursoRepository;
 
   @Override
-  public void salvarCurso(Curso curso) {
-    curso.setId(this.idIterator);
-    this.cursos.add(curso);
-    this.idIterator = this.idIterator + 1;
+  public Curso salvarCurso(Curso curso) {
+    return cursoRepository.save(curso);
   }
 
   @Override
   public void deletarCurso(Curso curso) {
-    this.cursos.remove(curso);
+    cursoRepository.delete(curso);
   }
 
   @Override
   public Curso getCursoById(Integer id) {
-    for (Curso curso : cursos) {
-      if (curso.getId() == id) {
-        return curso;
-      }
-    }
-    return null;
+    return cursoRepository.findById(id).map(curso -> {
+      return curso;
+    }).orElseThrow(() -> null);
   }
 
   @Override
   public List<Curso> getListaCursos() {
-    return this.cursos;
+    return cursoRepository.findAll();
   }
 
 }

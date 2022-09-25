@@ -17,13 +17,13 @@
     <div class="container d-flex justify-content-center py-4">
       <div class="rounded p-4" style="background-color: #fff; width: 100%; max-width: 500px">
         <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/curso/getListaCursos">
-          Lista de Cursos
+          < Voltar
         </a>
 
         <hr />
 
-        <h4 class="text-center mb-0" th:text="${curso.nome}"></h4>
-        <p class="text-center">Página do Curso</p>
+        <h4 class="text-center mb-2" th:text="${curso.nome}"></h4>
+        <p class="text-center mb-0" th:text="${curso.descricao}"></p>
       </div>
     </div>
   </body>

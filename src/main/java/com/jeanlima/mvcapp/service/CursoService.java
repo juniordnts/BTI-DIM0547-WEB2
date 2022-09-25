@@ -6,7 +6,7 @@ import com.jeanlima.mvcapp.model.Curso;
 
 @Service
 public interface CursoService {
-  public void salvarCurso(Curso curso);
+  public Curso salvarCurso(Curso curso);
 
   public void deletarCurso(Curso curso);
 

@@ -11,20 +11,22 @@
       crossorigin="anonymous"
     />
 
-    <title>Lista Cursos</title>
+    <title>Lista Avatares</title>
   </head>
   <body class="bg-light">
     <div class="container d-flex justify-content-center py-4">
       <div class="rounded p-4" style="background-color: #fff; width: 100%; max-width: 500px">
-        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/"> < Início </a>
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/estudante/getListaEstudantes">
+          < Voltar
+        </a>
 
-        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/curso/showForm">
-          + Formulário de Curso
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/avatar/showForm">
+          + Formulário de Avatares
         </a>
 
         <hr />
 
-        <h4 class="text-center mb-0">Lista de Cursos</h4>
+        <h4 class="text-center mb-0">Lista de Avatares</h4>
 
         <br />
 
@@ -32,28 +34,23 @@
           <thead>
             <tr>
               <th class="border-bottom-0" scope="col">ID</th>
-              <th class="border-bottom-0" scope="col">Nome</th>
-              <th class="border-bottom-0" scope="col"></th>
-              <th class="border-bottom-0" scope="col"></th>
+              <th class="border-bottom-0" scope="col">Nome fantasia</th>
+              <th class="border-bottom-0" scope="col">Estudante</th>
+              <th class="border-bottom-0" scope="col">Curso</th>
               <th class="border-bottom-0" scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="curso: ${cursos}">
-              <th scope="row" th:text="${curso.id}"></th>
-              <td th:text="${curso.nome}"></td>
+            <tr th:each="avatar: ${avatares}">
+              <th scope="row" th:text="${avatar.id}"></th>
+              <td th:text="${avatar.nomeFantasia}"></td>
+              <td th:text="${avatar.estudante.nome}"></td>
+              <td th:text="${avatar.estudante.curso}"></td>
               <td>
-                <a class="btn btn-sm btn-primary" th:href="'/curso/getCursoById/' + ${curso.id}">
-                  Detalhes
-                </a>
-              </td>
-              <td>
-                <a class="btn btn-sm btn-secondary" th:href="'/curso/showForm/' + ${curso.id}">
-                  Editar
-                </a>
-              </td>
-              <td>
-                <a class="btn btn-sm btn-danger" th:href="'/curso/deleteCursoById/' + ${curso.id}">
+                <a
+                  class="btn btn-sm btn-danger"
+                  th:href="'/avatar/deleteAvatarById/' + ${avatar.id}"
+                >
                   Excluir
                 </a>
               </td>

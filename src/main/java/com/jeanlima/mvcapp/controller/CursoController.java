@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.jeanlima.mvcapp.model.Curso;
 import com.jeanlima.mvcapp.service.CursoService;
@@ -28,10 +29,17 @@ public class CursoController {
   }
 
   @RequestMapping("/addCurso")
-  public String showFormCurso(@ModelAttribute("curso") Curso curso, Model model) {
+  public RedirectView showFormCurso(@ModelAttribute("curso") Curso curso, Model model) {
     cursoService.salvarCurso(curso);
     model.addAttribute("curso", curso);
-    return "curso/paginaCurso";
+    return new RedirectView("/curso/getListaCursos");
+  }
+
+  @RequestMapping("/showForm/{id}")
+  public String editFormCurso(@PathVariable Integer id, Model model) {
+    Curso curso = cursoService.getCursoById(id);
+    model.addAttribute("curso", curso);
+    return "curso/editCurso";
   }
 
   @RequestMapping("/getListaCursos")
@@ -47,6 +55,13 @@ public class CursoController {
     Curso curso = cursoService.getCursoById(id);
     model.addAttribute("curso", curso);
     return "curso/paginaCurso";
+  }
+
+  @RequestMapping("/deleteCursoById/{id}")
+  public RedirectView deleteCursoById(@PathVariable Integer id, Model model) {
+    Curso curso = cursoService.getCursoById(id);
+    cursoService.deletarCurso(curso);
+    return new RedirectView("/curso/getListaCursos");
   }
 
 }

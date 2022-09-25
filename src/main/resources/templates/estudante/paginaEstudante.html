@@ -22,22 +22,12 @@
 
         <hr />
 
-        <h4
-          class="text-center mb-0"
-          th:text="${estudante.primeiroNome} + ' ' + ${estudante.ultimoNome}"
-        ></h4>
+        <h4 class="text-center mb-0" th:text="${estudante.nome}"></h4>
         <p class="text-center">Página do Estudante</p>
 
         <hr />
 
-        <p>Seu curso é: <b th:text="${estudante.curso.nome}"></b></p>
-        <p>Linguagem favorita: <b th:text="${estudante.linguagem}"></b></p>
-        <p>
-          Sistemas Operacionais favoritos:
-          <span th:each="os : ${estudante.sistemasOperacionas}">
-            <b th:text="${os}" />
-          </span>
-        </p>
+        <p>Seu curso é: <b th:text="${estudante.curso}"></b></p>
       </div>
     </div>
   </body>

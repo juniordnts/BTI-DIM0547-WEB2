@@ -39,13 +39,9 @@ public class EstudanteController {
   }
 
   @RequestMapping("/addEstudante")
-  public String showFormEstudante(@ModelAttribute("estudante") Estudante estudante, Model model) {
-    int cursoId = Integer.parseInt(estudante.getCurso().getNome());
-    Curso cursoObj = cursoService.getCursoById(cursoId);
-    estudante.setCurso(cursoObj);
+  public RedirectView showFormEstudante(@ModelAttribute("estudante") Estudante estudante, Model model) {
     estudanteService.salvarEstudante(estudante);
-    model.addAttribute("estudante", estudante);
-    return "estudante/paginaEstudante";
+    return new RedirectView("/estudante/getListaEstudantes");
   }
 
   @RequestMapping("/getListaEstudantes")
@@ -62,33 +58,6 @@ public class EstudanteController {
     Estudante estudante = estudanteService.getEstudanteById(id);
     model.addAttribute("estudante", estudante);
     return "estudante/paginaEstudante";
-  }
-
-  @RequestMapping("/getEstudanteByCurso")
-  public String getEstudanteByCurso(@RequestParam int id, Model model) {
-    List<Estudante> estudantes = estudanteService.getEstudantesByCurso(id);
-    Curso cursoObject = cursoService.getCursoById(id);
-    model.addAttribute("estudantes", estudantes);
-    model.addAttribute("tipo", "Curso");
-    List<Curso> cursoNomes = new ArrayList<Curso>();
-    for (Curso curso : cursoService.getListaCursos()) {
-      if (curso.getId() == id) {
-        cursoNomes.add(curso);
-      }
-    }
-    model.addAttribute("tipos", cursoService.getListaCursos());
-    model.addAttribute("valor", cursoObject.getNome());
-    return "estudante/listaEstudantesPor";
-  }
-
-  @RequestMapping("/getEstudanteByLinguagem")
-  public String getEstudanteByLinguagem(@RequestParam String id, Model model) {
-    List<Estudante> estudantes = estudanteService.getEstudantesByLinguagem(id);
-    model.addAttribute("estudantes", estudantes);
-    model.addAttribute("tipo", "Linguagem");
-    model.addAttribute("tipos", Arrays.asList("Java", "C", "Python", "Javascript"));
-    model.addAttribute("valor", id);
-    return "estudante/listaEstudantesPor";
   }
 
   @RequestMapping("/deleteEstudanteById/{id}")

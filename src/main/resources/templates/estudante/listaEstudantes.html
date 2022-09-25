@@ -16,26 +16,14 @@
   <body class="bg-light">
     <div class="container d-flex justify-content-center py-4">
       <div class="rounded p-4" style="background-color: #fff; width: 100%; max-width: 500px">
-        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/curso/getListaCursos">
-          Lista de Cursos
-        </a>
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/"> < Início </a>
 
         <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/estudante/showForm">
           + Formulário de Estudantes
         </a>
 
-        <a
-          class="btn btn-sm btn-outline-primary w-100 mb-2"
-          href="/estudante/getEstudanteByCurso?id=1"
-        >
-          Estudantes por Curso
-        </a>
-
-        <a
-          class="btn btn-sm btn-outline-primary w-100 mb-2"
-          href="/estudante/getEstudanteByLinguagem?id=Java"
-        >
-          Estudantes por Linguagem
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/avatar/getListaAvatares">
+          Avatares
         </a>
 
         <hr />
@@ -57,21 +45,23 @@
           <tbody>
             <tr th:each="estudante: ${estudantes}">
               <th scope="row" th:text="${estudante.id}"></th>
-              <td th:text="${estudante.primeiroNome}"></td>
-              <td th:text="${estudante.curso.nome}"></td>
+              <td th:text="${estudante.nome}"></td>
+              <td th:text="${estudante.curso}"></td>
               <td>
                 <a
                   class="btn btn-sm btn-primary"
                   th:href="'/estudante/getEstudanteById/' + ${estudante.id}"
-                  >Detalhes</a
                 >
+                  Detalhes
+                </a>
               </td>
               <td>
                 <a
                   class="btn btn-sm btn-danger"
                   th:href="'/estudante/deleteEstudanteById/' + ${estudante.id}"
-                  >Excluir</a
                 >
+                  Excluir
+                </a>
               </td>
             </tr>
           </tbody>

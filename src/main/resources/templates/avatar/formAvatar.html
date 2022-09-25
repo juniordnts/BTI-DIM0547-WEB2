@@ -11,40 +11,45 @@
       crossorigin="anonymous"
     />
 
-    <title>Formulário Curso</title>
+    <title>Formulário Avatar</title>
   </head>
   <body class="bg-light">
     <div class="container d-flex justify-content-center py-4">
       <div class="rounded p-4" style="background-color: #fff; width: 100%; max-width: 500px">
-        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/curso/getListaCursos">
-          < Voltar
+        <a class="btn btn-sm btn-outline-primary w-100 mb-2" href="/avatar/getListaAvatares">
+          Lista de Avatares
         </a>
 
         <hr />
 
-        <h4 class="text-center mb-0">Formulário de Curso</h4>
+        <h4 class="text-center mb-0">Formulário de Avatar</h4>
 
         <br />
 
-        <form action="#" th:action="@{/curso/addCurso}" th:object="${curso}" method="post">
+        <form action="#" th:action="@{/avatar/addAvatar}" th:object="${avatar}" method="post">
           <div class="form-group">
-            <label>Nome:</label>
+            <label>Nome fantasia:</label>
             <input
               class="form-control"
               type="text"
-              th:field="*{nome}"
-              placeholder="Insira o nome"
+              th:field="*{nomeFantasia}"
+              placeholder="Insira o nome do avatar"
             />
           </div>
 
+          <!--  -->
+
           <div class="form-group">
-            <label>Descrição:</label>
-            <input
-              class="form-control"
-              type="text"
-              th:field="*{descricao}"
-              placeholder="Insira a descrição"
-            />
+            <label>Estudante:</label>
+            <select class="form-control" th:field="*{estudante}">
+              <option
+                th:each="estudante: ${estudantes}"
+                th:value="${estudante.id}"
+                th:text="${estudante.nome}"
+              >
+                Estudante
+              </option>
+            </select>
           </div>
 
           <!--  -->

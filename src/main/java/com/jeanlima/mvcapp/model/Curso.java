@@ -1,9 +1,25 @@
 package com.jeanlima.mvcapp.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "cursos")
 public class Curso {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
+
+  @Column(length = 100)
   private String nome;
+
+  @Column(length = 100)
+  private String descricao;
 
   public Curso() {
   }
@@ -12,9 +28,12 @@ public class Curso {
     this.nome = nome;
   }
 
-  public Curso(int id, String nome) {
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
     this.id = id;
-    this.nome = nome;
   }
 
   public String getNome() {
@@ -25,12 +44,12 @@ public class Curso {
     this.nome = nome;
   }
 
-  public int getId() {
-    return id;
+  public String getDescricao() {
+    return descricao;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setDescricao(String descricao) {
+    this.descricao = descricao;
   }
 
   @Override

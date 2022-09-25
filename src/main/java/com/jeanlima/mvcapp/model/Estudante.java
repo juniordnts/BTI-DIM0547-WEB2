@@ -1,87 +1,36 @@
 package com.jeanlima.mvcapp.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "estudantes")
 public class Estudante {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-  private String primeiroNome;
-  private String ultimoNome;
-  private Curso curso;
-  private String linguagem;
-  private String email;
 
-  private String[] sistemasOperacionas;
+  @Column(length = 100)
+  private String nome;
+
+  @Column(length = 50)
+  private String curso;
+
+  @OneToOne(mappedBy = "estudante")
+  private Avatar avatar;
 
   public Estudante() {
   }
 
-  public Estudante(String primeiroNome, String ultimoNome, Curso curso, String linguagem, String email) {
-    this.primeiroNome = primeiroNome;
-    this.ultimoNome = ultimoNome;
+  public Estudante(String nome, String curso) {
+    this.nome = nome;
     this.curso = curso;
-    this.linguagem = linguagem;
-    this.email = email;
-  }
-
-  public Estudante(int id, String primeiroNome, String ultimoNome, Curso curso, String linguagem, String email) {
-    this.id = id;
-    this.primeiroNome = primeiroNome;
-    this.ultimoNome = ultimoNome;
-    this.curso = curso;
-    this.linguagem = linguagem;
-    this.email = email;
-  }
-
-  public String getPrimeiroNome() {
-    return primeiroNome;
-  }
-
-  public void setPrimeiroNome(String primeiroNome) {
-    this.primeiroNome = primeiroNome;
-  }
-
-  public String getUltimoNome() {
-    return ultimoNome;
-  }
-
-  public void setUltimoNome(String ultimoNome) {
-    this.ultimoNome = ultimoNome;
-  }
-
-  @Override
-  public String toString() {
-    return "Estudante [" + primeiroNome + " " + ultimoNome + "]";
-  }
-
-  public Curso getCurso() {
-    return curso;
-  }
-
-  public void setCurso(Curso curso) {
-    this.curso = curso;
-  }
-
-  public String getLinguagem() {
-    return linguagem;
-  }
-
-  public void setLinguagem(String linguagem) {
-    this.linguagem = linguagem;
-  }
-
-  public String[] getSistemasOperacionas() {
-    return sistemasOperacionas;
-  }
-
-  public void setSistemasOperacionas(String[] sistemasOperacionas) {
-    this.sistemasOperacionas = sistemasOperacionas;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
   public int getId() {
@@ -90,6 +39,27 @@ public class Estudante {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public String getCurso() {
+    return curso;
+  }
+
+  public void setCurso(String curso) {
+    this.curso = curso;
+  }
+
+  @Override
+  public String toString() {
+    return "Estudante [id=" + id + ", nome=" + nome + ",curso=" + curso + ", ]";
   }
 
 }

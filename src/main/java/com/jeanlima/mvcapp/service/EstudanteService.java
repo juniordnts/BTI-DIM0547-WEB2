@@ -8,7 +8,8 @@ import com.jeanlima.mvcapp.model.Estudante;
 
 @Service
 public interface EstudanteService {
-  public void salvarEstudante(Estudante estudante);
+
+  public Estudante salvarEstudante(Estudante estudante);
 
   public void deletarEstudante(Estudante estudante);
 
@@ -16,7 +17,4 @@ public interface EstudanteService {
 
   public List<Estudante> getListaEstudante();
 
-  public List<Estudante> getEstudantesByCurso(int curso);
-
-  public List<Estudante> getEstudantesByLinguagem(String linguagem);
 }

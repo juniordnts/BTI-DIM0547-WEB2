@@ -16,24 +16,4 @@ public class HelloController {
     return "main-menu";
   }
 
-  @RequestMapping("/showForm")
-  public String showForm() {
-    return "helloworld-form";
-  }
-
-  @RequestMapping("/processaForm")
-  public String processForm(HttpServletRequest request, Model model) {
-    String paramNome = request.getParameter("nome");
-    model.addAttribute("nome", paramNome);
-    return "helloworld";
-  }
-
-  @RequestMapping("/processaFormDois")
-  public String processFormDois(@RequestParam("nome") String nome, Model model) {
-    nome = nome.toUpperCase();
-    String result = "Olá! " + nome;
-    model.addAttribute("msg", result);
-    return "helloworld";
-  }
-
 }
