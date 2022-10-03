@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <th:block th:replace="fragments/head.html(${controllerTitle})"></th:block>
+  </head>
+  <body class="bg-light">
+    <th:block th:replace="fragments/nav.html :: top"></th:block>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!--  -->
+
+        <th:block th:replace="fragments/nav.html :: side(${controller})"></th:block>
+
+        <!--  -->
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <th:block
+            th:replace="fragments/nav.html :: page(${controllerTitle}, ${controller})"
+          ></th:block>
+
+          <th:block th:if="${id}">
+            <h2>Edit One</h2>
+          </th:block>
+          <th:block th:unless="${id}">
+            <h2>Add New</h2>
+          </th:block>
+
+          <!--  -->
+
+          <form
+            action="#"
+            th:action="@{'/' + ${controller} + '/create'}"
+            th:object="${modelInstance}"
+            method="post"
+          >
+            <!--  -->
+
+            <th:block th:if="${id}">
+              <input type="hidden" th:field="*{id}" />
+            </th:block>
+
+            <!--  -->
+
+            <div class="form-group">
+              <label>Date:</label>
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{date}"
+                placeholder="Date of the appointment"
+              />
+              <small>Format 28/12/2022</small>
+            </div>
+
+            <!--  -->
+
+            <div class="form-group">
+              <label>Customer:</label>
+              <select class="form-control" th:field="*{customer}">
+                <option
+                  th:each="item: ${customerInstances}"
+                  th:value="${item.id}"
+                  th:text="${item.name}"
+                >
+                  Item
+                </option>
+              </select>
+            </div>
+
+            <!--  -->
+
+            <div class="form-group">
+              <label>Employee:</label>
+              <select class="form-control" th:field="*{employee}">
+                <option
+                  th:each="item: ${employeeInstances}"
+                  th:value="${item.id}"
+                  th:text="${item.name}"
+                >
+                  Item
+                </option>
+              </select>
+            </div>
+
+            <!--  -->
+
+            <p class="mt-2 mb-1">Procedures:</p>
+
+            <div class="form-check" th:each="item: ${procedureInstances}">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                th:field="*{procedures}"
+                th:value="${item.id}"
+                th:text="${item.name}"
+              />
+            </div>
+
+            <!--  -->
+
+            <br />
+
+            <div class="text-right">
+              <button type="submit" class="btn btn-primary mb-2">
+                <span data-feather="save"></span> Save
+              </button>
+            </div>
+          </form>
+        </main>
+      </div>
+    </div>
+
+    <th:block th:replace="fragments/script.html"></th:block>
+  </body>
+</html>

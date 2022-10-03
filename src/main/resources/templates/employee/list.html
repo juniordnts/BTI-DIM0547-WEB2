@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <th:block th:replace="fragments/head.html(${controllerTitle})"></th:block>
+  </head>
+  <body class="bg-light">
+    <th:block th:replace="fragments/nav.html :: top"></th:block>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!--  -->
+
+        <th:block th:replace="fragments/nav.html :: side(${controller})"></th:block>
+
+        <!--  -->
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <th:block
+            th:replace="fragments/nav.html :: page(${controllerTitle}, ${controller})"
+          ></th:block>
+
+          <h2>List</h2>
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="instance: ${modelInstances}">
+                  <td th:text="${instance.id}"></td>
+                  <td th:text="${instance.name}"></td>
+                  <td th:text="${instance.role}"></td>
+                  <td>
+                    <a
+                      class="btn btn-sm btn-primary"
+                      th:href="'/' + ${controller} + '/form/' + ${instance.id}"
+                    >
+                      <span data-feather="edit"></span> Edit
+                    </a>
+                  </td>
+                  <td>
+                    <a
+                      class="btn btn-sm btn-danger"
+                      th:href="'/' + ${controller} + '/delete/' + ${instance.id}"
+                    >
+                      <span data-feather="trash-2"></span> Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <th:block th:replace="fragments/script.html"></th:block>
+  </body>
+</html>

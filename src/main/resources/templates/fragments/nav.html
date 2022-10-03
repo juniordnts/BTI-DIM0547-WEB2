@@ -1,0 +1,78 @@
+<th:block th:fragment="top()">
+  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Hair Shop</a>
+  </nav>
+</th:block>
+
+<!--  -->
+
+<th:block th:fragment="page(title, controller)">
+  <div
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+  >
+    <h1 class="h2" th:text="${title}"></h1>
+    <div class="btn-toolbar mb-2 mb-md-0" th:if="${controller} != 'home'">
+      <a class="btn btn-success" th:href="@{/{controller}/form(controller=${controller})}">
+        <span data-feather="plus-circle"></span>
+        Add New
+      </a>
+    </div>
+  </div>
+</th:block>
+
+<!--  -->
+
+<th:block th:fragment="side(active)">
+  <nav id="sidebarMenu" class="col-md-3 col-lg-2 bg-light sidebar">
+    <div class="sidebar-sticky pt-3">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${active} == 'home' ? 'active' : ''" href="/">
+            <span data-feather="home"></span>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            th:classappend="${active} == 'procedure' ? 'active' : ''"
+            href="/procedure/list"
+          >
+            <span data-feather="layers"></span>
+            Procedures
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            th:classappend="${active} == 'customer' ? 'active' : ''"
+            href="/customer/list"
+          >
+            <span data-feather="users"></span>
+            Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            th:classappend="${active} == 'employee' ? 'active' : ''"
+            href="/employee/list"
+          >
+            <span data-feather="bar-chart-2"></span>
+            Employees
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            th:classappend="${active} == 'appointment' ? 'active' : ''"
+            href="/appointment/list"
+          >
+            <span data-feather="file"></span>
+            Appointments
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</th:block>
