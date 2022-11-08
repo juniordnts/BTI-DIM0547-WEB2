@@ -5,34 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.imd.project.model.Employee;
-import com.imd.project.repository.EmployeeRepository;
+import com.imd.project.model.Address;
+import com.imd.project.repository.AddressRepository;
 
 @Component
-public class EmployeeServiceImpl implements EmployeeService {
+public class AddressServiceImpl implements AddressService {
 
   @Autowired
-  EmployeeRepository modelEntityRepository;
+  AddressRepository modelEntityRepository;
 
   @Override
-  public Employee save(Employee modelInstance) {
+  public Address save(Address modelInstance) {
     return modelEntityRepository.save(modelInstance);
   }
 
   @Override
-  public void delete(Employee modelInstance) {
+  public void delete(Address modelInstance) {
     modelEntityRepository.delete(modelInstance);
   }
 
   @Override
-  public Employee getOneById(Integer id) {
+  public Address getOneById(Integer id) {
     return modelEntityRepository.findById(id).map(modelInstance -> {
       return modelInstance;
-    }).orElseThrow(() -> null);
+    }).orElseGet(() -> null);
   }
 
   @Override
-  public List<Employee> getAll() {
+  public List<Address> getAll() {
     return modelEntityRepository.findAll();
   }
 

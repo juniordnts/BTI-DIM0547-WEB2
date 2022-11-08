@@ -1,17 +1,18 @@
 package com.imd.project.model;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "procedures")
@@ -22,13 +23,15 @@ public class Procedure {
   private int id;
 
   @Column(length = 100)
+  @NotEmpty(message = "Campo 'name' obrigatorio")
   private String name;
 
-  @Column(length = 100)
-  private float price;
+  @Column(precision = 20, scale = 2)
+  private BigDecimal price;
 
   //
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "procedures")
   Set<Appointment> appointments;
 
@@ -56,7 +59,7 @@ public class Procedure {
     return name;
   }
 
-  public float getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
@@ -72,7 +75,7 @@ public class Procedure {
     this.name = name;
   }
 
-  public void setPrice(float price) {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
 

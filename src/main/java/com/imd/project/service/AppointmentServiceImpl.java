@@ -1,7 +1,5 @@
 package com.imd.project.service;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
   public Appointment getOneById(Integer id) {
     return modelEntityRepository.findById(id).map(modelInstance -> {
       return modelInstance;
-    }).orElseThrow(() -> null);
+    }).orElseGet(() -> null);
   }
 
   @Override

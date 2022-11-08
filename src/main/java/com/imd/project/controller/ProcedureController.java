@@ -1,83 +1,86 @@
 package com.imd.project.controller;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import org.springframework.http.HttpStatus;
 
 import com.imd.project.model.Procedure;
 import com.imd.project.service.ProcedureService;
 
-@Controller
+@RestController
 @RequestMapping("/procedure")
 public class ProcedureController {
 
   @Autowired
-  @Qualifier("procedureServiceImpl")
   ProcedureService currentModelService;
 
-  @ModelAttribute("controller")
-  public String getVersion() {
-    return "procedure";
+  //
+
+  @GetMapping("/{id}")
+  public Procedure getById(@Valid @PathVariable Integer id) {
+    Procedure itemFound = currentModelService
+        .getOneById(id);
+
+    if (itemFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Não encontrado");
+
+    return itemFound;
   }
 
-  @ModelAttribute("controllerTitle")
-  public String getControllerTitle() {
-    return "Procedure";
+  @GetMapping("/list")
+  public List<Procedure> getList() {
+    return currentModelService
+        .getAll();
   }
 
-  @RequestMapping("/form")
-  public String getForm(Model model) {
-    model.addAttribute("modelInstance", new Procedure());
-    return "procedure/form";
+  @PostMapping()
+  @ResponseStatus(HttpStatus.CREATED)
+  public Procedure postCreate(@Valid @RequestBody Procedure item) {
+    return currentModelService.save(item);
   }
 
-  @RequestMapping("/form/{id}")
-  public String getEdit(@PathVariable Integer id, Model model) {
-    Procedure modelInstance = currentModelService.getOneById(id);
-    model.addAttribute("modelInstance", modelInstance);
-    return "procedure/form";
+  @PutMapping("/{id}")
+  public Procedure update(@Valid @PathVariable Integer id, @RequestBody Procedure item) {
+    Procedure itemFound = currentModelService.getOneById(id);
+
+    if (itemFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Não encontrado");
+
+    item.setId(itemFound.getId());
+    currentModelService.save(item);
+
+    return item;
   }
 
-  @RequestMapping("/one/{id}")
-  public String getById(@PathVariable Integer id, Model model) {
-    Procedure modelInstance = currentModelService.getOneById(id);
-    model.addAttribute("modelInstance", modelInstance);
-    return "procedure/one";
-  }
+  @DeleteMapping("/{id}")
+  public void postDelete(@Valid @PathVariable Integer id) {
+    Procedure itemFound = currentModelService.getOneById(id);
 
-  @RequestMapping("/list")
-  public String getList(Model model) {
-    List<Procedure> modelInstances = currentModelService.getAll();
-    model.addAttribute("modelInstances", modelInstances);
-    return "procedure/list";
-  }
+    if (itemFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Não encontrado");
 
-  @RequestMapping("/create")
-  public RedirectView updateCreate(@ModelAttribute("modelInstance") Procedure modelInstance, Model model) {
-    currentModelService.save(modelInstance);
-    return new RedirectView("/procedure/list");
-  }
-
-  @RequestMapping("/delete/{id}")
-  public RedirectView updateDelete(@PathVariable Integer id, Model model) {
-    Procedure modelInstance = currentModelService.getOneById(id);
-    currentModelService.delete(modelInstance);
-    return new RedirectView("/procedure/list");
+    currentModelService.delete(itemFound);
   }
 
 }

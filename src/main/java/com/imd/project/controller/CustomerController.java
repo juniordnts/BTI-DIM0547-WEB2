@@ -1,83 +1,144 @@
 package com.imd.project.controller;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import org.springframework.http.HttpStatus;
+
+import com.imd.project.dto.CustomerDTO;
+import com.imd.project.model.Address;
+import com.imd.project.model.Appointment;
 import com.imd.project.model.Customer;
+import com.imd.project.service.AddressService;
 import com.imd.project.service.CustomerService;
 
-@Controller
+@RestController
 @RequestMapping("/customer")
 public class CustomerController {
 
   @Autowired
-  @Qualifier("customerServiceImpl")
   CustomerService currentModelService;
 
-  @ModelAttribute("controller")
-  public String getVersion() {
-    return "customer";
+  @Autowired
+  AddressService addressModelService;
+
+  //
+
+  @GetMapping("/{id}")
+  public Customer getById(@Valid @PathVariable Integer id) {
+    Customer itemFound = currentModelService.getOneById(id);
+
+    Customer newItem = new Customer();
+    newItem.setId(itemFound.getId());
+    newItem.setName(itemFound.getName());
+    newItem.setCpf(itemFound.getCpf());
+    newItem.setBorn_date(itemFound.getBorn_date());
+    newItem.setAddress(itemFound.getAddress());
+    List<Appointment> newAppointments = new ArrayList<Appointment>();
+    for (Appointment appointmentIt : itemFound.getAppointments()) {
+      appointmentIt.setCustomer(null);
+      newAppointments.add(appointmentIt);
+    }
+    newItem.setAppointments(new HashSet<>(newAppointments));
+    return newItem;
   }
 
-  @ModelAttribute("controllerTitle")
-  public String getControllerTitle() {
-    return "Customer";
+  @GetMapping("/list")
+  public List<Customer> getList() {
+    List<Customer> listFound = currentModelService.getAll();
+    List<Customer> newList = new ArrayList<Customer>();
+    for (Customer customerIt : listFound) {
+      Customer newItem = new Customer();
+      newItem.setId(customerIt.getId());
+      newItem.setName(customerIt.getName());
+      newItem.setCpf(customerIt.getCpf());
+      newItem.setBorn_date(customerIt.getBorn_date());
+      newItem.setAddress(customerIt.getAddress());
+      List<Appointment> newAppointments = new ArrayList<Appointment>();
+      for (Appointment appointmentIt : customerIt.getAppointments()) {
+        appointmentIt.setCustomer(null);
+        newAppointments.add(appointmentIt);
+      }
+      newItem.setAppointments(new HashSet<>(newAppointments));
+      newList.add(newItem);
+    }
+
+    return newList;
   }
 
-  @RequestMapping("/form")
-  public String getForm(Model model) {
-    model.addAttribute("modelInstance", new Customer());
-    return "customer/form";
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Customer postCreate(@Valid @RequestBody CustomerDTO item) {
+    Customer newItem = new Customer();
+    newItem.setName(item.getName());
+    newItem.setCpf(item.getCpf());
+    newItem.setBorn_date(item.getBorn_date());
+
+    Address addressFound = addressModelService.getOneById(item.getAddress());
+    if (addressFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Endereço não encontrado");
+
+    newItem.setAddress(addressFound);
+
+    return currentModelService.save(newItem);
   }
 
-  @RequestMapping("/form/{id}")
-  public String getEdit(@PathVariable Integer id, Model model) {
-    Customer modelInstance = currentModelService.getOneById(id);
-    model.addAttribute("modelInstance", modelInstance);
-    return "customer/form";
+  @PutMapping("/{id}")
+  public Customer update(@Valid @PathVariable Integer id, @RequestBody CustomerDTO item) {
+    Customer itemFound = currentModelService.getOneById(id);
+
+    if (itemFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Não encontrado");
+
+    Customer newItem = new Customer();
+    newItem.setName(item.getName());
+    newItem.setCpf(item.getCpf());
+    newItem.setBorn_date(item.getBorn_date());
+
+    Address addressFound = addressModelService.getOneById(item.getAddress());
+    if (addressFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Endereço não encontrado");
+
+    newItem.setAddress(addressFound);
+
+    newItem.setId(itemFound.getId());
+    currentModelService.save(newItem);
+
+    return newItem;
   }
 
-  @RequestMapping("/one/{id}")
-  public String getById(@PathVariable Integer id, Model model) {
-    Customer modelInstance = currentModelService.getOneById(id);
-    model.addAttribute("modelInstance", modelInstance);
-    return "customer/one";
-  }
+  @DeleteMapping("/{id}")
+  public void postDelete(@Valid @PathVariable Integer id) {
+    Customer itemFound = currentModelService.getOneById(id);
 
-  @RequestMapping("/list")
-  public String getList(Model model) {
-    List<Customer> modelInstances = currentModelService.getAll();
-    model.addAttribute("modelInstances", modelInstances);
-    return "customer/list";
-  }
+    if (itemFound == null)
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Não encontrado");
 
-  @RequestMapping("/create")
-  public RedirectView updateCreate(@ModelAttribute("modelInstance") Customer modelInstance, Model model) {
-    currentModelService.save(modelInstance);
-    return new RedirectView("/customer/list");
-  }
-
-  @RequestMapping("/delete/{id}")
-  public RedirectView updateDelete(@PathVariable Integer id, Model model) {
-    Customer modelInstance = currentModelService.getOneById(id);
-    currentModelService.delete(modelInstance);
-    return new RedirectView("/customer/list");
+    currentModelService.delete(itemFound);
   }
 
 }

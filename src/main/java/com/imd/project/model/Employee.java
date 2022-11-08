@@ -2,16 +2,16 @@ package com.imd.project.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employees")
@@ -22,13 +22,16 @@ public class Employee {
   private int id;
 
   @Column(length = 100)
+  @NotEmpty(message = "Campo 'name' obrigatorio")
   private String name;
 
   @Column(length = 100)
+  @NotEmpty(message = "Campo 'role' obrigatorio")
   private String role;
 
   //
 
+  @JsonIgnore
   @OneToMany(mappedBy = "employee")
   private Set<Appointment> appointments;
 

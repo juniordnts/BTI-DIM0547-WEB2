@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "customers")
@@ -22,18 +23,27 @@ public class Customer {
   private int id;
 
   @Column(length = 100)
+  @NotEmpty(message = "Campo 'name' obrigatorio")
   private String name;
 
   @Column(length = 11)
+  @NotEmpty(message = "Campo 'cpf' obrigatorio")
   private String cpf;
 
   @Column(length = 100)
+  @NotEmpty(message = "Campo 'born_date' obrigatorio")
   private String born_date;
 
   //
 
+  // @JsonIgnore
   @OneToMany(mappedBy = "customer")
   private Set<Appointment> appointments;
+
+  // @JsonIgnore
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "address_id", referencedColumnName = "id")
+  private Address address;
 
   //
 
@@ -85,6 +95,14 @@ public class Customer {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 
 }

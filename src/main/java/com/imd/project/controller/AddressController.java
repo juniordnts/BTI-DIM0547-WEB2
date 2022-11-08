@@ -19,21 +19,21 @@ import org.springframework.web.server.ResponseStatusException;
 
 import org.springframework.http.HttpStatus;
 
-import com.imd.project.model.Employee;
-import com.imd.project.service.EmployeeService;
+import com.imd.project.model.Address;
+import com.imd.project.service.AddressService;
 
 @RestController
-@RequestMapping("/employee")
-public class EmployeeController {
+@RequestMapping("/address")
+public class AddressController {
 
   @Autowired
-  EmployeeService currentModelService;
+  AddressService currentModelService;
 
   //
 
   @GetMapping("/{id}")
-  public Employee getById(@Valid @PathVariable Integer id) {
-    Employee itemFound = currentModelService
+  public Address getById(@Valid @PathVariable Integer id) {
+    Address itemFound = currentModelService
         .getOneById(id);
 
     if (itemFound == null)
@@ -45,20 +45,20 @@ public class EmployeeController {
   }
 
   @GetMapping("/list")
-  public List<Employee> getList() {
+  public List<Address> getList() {
     return currentModelService
         .getAll();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Employee postCreate(@Valid @RequestBody Employee item) {
+  public Address postCreate(@Valid @RequestBody Address item) {
     return currentModelService.save(item);
   }
 
   @PutMapping("/{id}")
-  public Employee update(@Valid @PathVariable Integer id, @RequestBody Employee item) {
-    Employee itemFound = currentModelService.getOneById(id);
+  public Address update(@Valid @PathVariable Integer id, @RequestBody Address item) {
+    Address itemFound = currentModelService.getOneById(id);
 
     if (itemFound == null)
       throw new ResponseStatusException(
@@ -73,7 +73,7 @@ public class EmployeeController {
 
   @DeleteMapping("/{id}")
   public void postDelete(@Valid @PathVariable Integer id) {
-    Employee itemFound = currentModelService.getOneById(id);
+    Address itemFound = currentModelService.getOneById(id);
 
     if (itemFound == null)
       throw new ResponseStatusException(
