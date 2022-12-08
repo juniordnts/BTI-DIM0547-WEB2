@@ -15,6 +15,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "appointments")
 public class Appointment {
@@ -36,54 +45,17 @@ public class Appointment {
   @JoinColumn(name = "employee_id", nullable = false)
   private Employee employee;
 
+  @ManyToOne
+  @JoinColumn(name = "coupon_id", nullable = true)
+  private Coupon coupon;
+
+  @ManyToOne
+  @JoinColumn(name = "payment_id", nullable = true)
+  private Payment payment;
+
   // @JsonIgnore
   @ManyToMany
   @JoinTable(name = "procedure_appointment", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "procedure_id"))
   private Set<Procedure> procedures;
-
-  public Appointment() {
-  }
-
-  //
-
-  public Customer getCustomer() {
-    return customer;
-  }
-
-  public String getDate() {
-    return date;
-  }
-
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public Set<Procedure> getProcedures() {
-    return procedures;
-  }
-
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  }
-
-  public void setDate(String date) {
-    this.date = date;
-  }
-
-  public void setEmployee(Employee employee) {
-    this.employee = employee;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public void setProcedures(Set<Procedure> procedures) {
-    this.procedures = procedures;
-  }
 
 }

@@ -87,6 +87,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
+    <dependency>
+      <groupId>com.github.javadev</groupId>
+      <artifactId>underscore</artifactId>
+      <version>1.84</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20220924</version>
+    </dependency>
 	</dependencies>
 
 	<build>

@@ -10,9 +10,9 @@ import com.imd.project.model.User;
 
 @Service
 public interface UserService {
-  public User save(User curso);
+  public User save(User item);
 
-  public void delete(User curso);
+  public void delete(User item);
 
   public User getOneById(Integer id);
 

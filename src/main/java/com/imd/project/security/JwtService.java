@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
@@ -32,6 +34,13 @@ public class JwtService {
 
   //
 
+  public Date getExpiration() {
+    long expString = Long.valueOf(expiracao);
+    LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
+    Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
+    return Date.from(instant);
+  }
+
   public String generateToken(User usuario) {
     long expString = Long.valueOf(expiracao);
     LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
@@ -40,8 +49,12 @@ public class JwtService {
 
     SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(chaveAssinatura));
 
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("isAdmin", usuario.isAdmin());
+
     return Jwts
         .builder()
+        .setClaims(claims)
         .setSubject(usuario.getUsername())
         .setExpiration(data)
         .signWith(key)

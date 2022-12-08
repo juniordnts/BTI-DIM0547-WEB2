@@ -7,9 +7,9 @@ import com.imd.project.model.Customer;
 
 @Service
 public interface CustomerService {
-  public Customer save(Customer curso);
+  public Customer save(Customer item);
 
-  public void delete(Customer curso);
+  public void delete(Customer item);
 
   public Customer getOneById(Integer id);
 

@@ -31,25 +31,46 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        .cors()
+        .and()
         .csrf()
         .disable()
         .authorizeHttpRequests((authManager) -> {
           try {
             authManager
                 .antMatchers(
+                    HttpMethod.OPTIONS,
+                    "**")
+                .permitAll()
+
+                .antMatchers(
                     HttpMethod.GET,
-                    "/address/**", "/procedure/**", "/customer/**", "/employee/**")
+                    "/address/**",
+                    "/procedure/**",
+                    "/appointment/**",
+                    "/customer/**",
+                    "/employee/**",
+                    "/coupon/**",
+                    "/payment/**")
                 .hasAnyRole("USER", "ADMIN")
 
                 .antMatchers(
                     HttpMethod.POST,
-                    "/appointment/**")
+                    "/appointment/**",
+                    "/coupon/**")
                 .hasAnyRole("USER", "ADMIN")
 
-                .antMatchers("/address/**", "/appointment/**", "/customer/**", "/employee/**", "/procedure/**")
+                .antMatchers(
+                    "/address/**",
+                    "/appointment/**",
+                    "/customer/**",
+                    "/employee/**",
+                    "/procedure/**",
+                    "/payment/**")
                 .hasRole("ADMIN")
 
-                .antMatchers(HttpMethod.POST, "/user/**")
+                .antMatchers(HttpMethod.POST,
+                    "/user/**")
                 .permitAll()
 
                 .anyRequest()
@@ -58,7 +79,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class).cors();
           } catch (Exception e) {
             e.printStackTrace();
           }

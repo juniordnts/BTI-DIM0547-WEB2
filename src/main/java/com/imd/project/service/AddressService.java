@@ -7,9 +7,9 @@ import com.imd.project.model.Address;
 
 @Service
 public interface AddressService {
-  public Address save(Address curso);
+  public Address save(Address item);
 
-  public void delete(Address curso);
+  public void delete(Address item);
 
   public Address getOneById(Integer id);
 

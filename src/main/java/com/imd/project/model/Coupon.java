@@ -7,36 +7,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "procedures")
-public class Procedure {
+@Table(name = "coupons")
+public class Coupon {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(length = 100)
-  @NotEmpty(message = "Campo 'name' obrigatorio")
-  private String name;
+  @NotEmpty(message = "Campo 'codigo' obrigatorio")
+  private String code;
 
-  @Column(precision = 20, scale = 2)
-  private double price;
+  @Column(length = 100)
+  private int discount;
 
   //
 
   @JsonIgnore
-  @ManyToMany(mappedBy = "procedures")
-  Set<Appointment> appointments;
+  @OneToMany(mappedBy = "coupon")
+  private Set<Appointment> appointments;
 
   //
 
-  public Procedure() {
+  public Coupon() {
   }
 
   @Override
@@ -54,12 +54,20 @@ public class Procedure {
     return id;
   }
 
-  public String getName() {
-    return name;
+  public String getCode() {
+    return code;
   }
 
-  public double getPrice() {
-    return price;
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public int getDiscount() {
+    return discount;
+  }
+
+  public void setDiscount(int discount) {
+    this.discount = discount;
   }
 
   public void setAppointments(Set<Appointment> appointments) {
@@ -68,14 +76,6 @@ public class Procedure {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setPrice(double price) {
-    this.price = price;
   }
 
 }

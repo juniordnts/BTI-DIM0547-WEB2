@@ -43,19 +43,22 @@ public class CustomerController {
   @GetMapping("/{id}")
   public Customer getById(@Valid @PathVariable Integer id) {
     Customer itemFound = currentModelService.getOneById(id);
+    // return itemFound;
 
     Customer newItem = new Customer();
     newItem.setId(itemFound.getId());
     newItem.setName(itemFound.getName());
     newItem.setCpf(itemFound.getCpf());
+    newItem.setEmail(itemFound.getEmail());
     newItem.setBorn_date(itemFound.getBorn_date());
     newItem.setAddress(itemFound.getAddress());
-    List<Appointment> newAppointments = new ArrayList<Appointment>();
-    for (Appointment appointmentIt : itemFound.getAppointments()) {
-      appointmentIt.setCustomer(null);
-      newAppointments.add(appointmentIt);
-    }
-    newItem.setAppointments(new HashSet<>(newAppointments));
+
+    // List<Appointment> newAppointments = new ArrayList<Appointment>();
+    // for (Appointment appointmentIt : itemFound.getAppointments()) {
+    // appointmentIt.setCustomer(null);
+    // newAppointments.add(appointmentIt);
+    // }
+    // newItem.setAppointments(new HashSet<>(newAppointments));
     return newItem;
   }
 
@@ -68,14 +71,15 @@ public class CustomerController {
       newItem.setId(customerIt.getId());
       newItem.setName(customerIt.getName());
       newItem.setCpf(customerIt.getCpf());
+      newItem.setEmail(customerIt.getEmail());
       newItem.setBorn_date(customerIt.getBorn_date());
       newItem.setAddress(customerIt.getAddress());
-      List<Appointment> newAppointments = new ArrayList<Appointment>();
-      for (Appointment appointmentIt : customerIt.getAppointments()) {
-        appointmentIt.setCustomer(null);
-        newAppointments.add(appointmentIt);
-      }
-      newItem.setAppointments(new HashSet<>(newAppointments));
+      // List<Appointment> newAppointments = new ArrayList<Appointment>();
+      // for (Appointment appointmentIt : customerIt.getAppointments()) {
+      // appointmentIt.setCustomer(null);
+      // newAppointments.add(appointmentIt);
+      // }
+      // newItem.setAppointments(new HashSet<>(newAppointments));
       newList.add(newItem);
     }
 
@@ -88,6 +92,7 @@ public class CustomerController {
     Customer newItem = new Customer();
     newItem.setName(item.getName());
     newItem.setCpf(item.getCpf());
+    newItem.setEmail(item.getEmail());
     newItem.setBorn_date(item.getBorn_date());
 
     Address addressFound = addressModelService.getOneById(item.getAddress());
@@ -112,6 +117,7 @@ public class CustomerController {
 
     Customer newItem = new Customer();
     newItem.setName(item.getName());
+    newItem.setEmail(item.getEmail());
     newItem.setCpf(item.getCpf());
     newItem.setBorn_date(item.getBorn_date());
 

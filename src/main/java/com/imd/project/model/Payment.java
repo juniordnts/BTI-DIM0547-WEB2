@@ -2,15 +2,12 @@ package com.imd.project.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -26,38 +23,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "payments")
+public class Payment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(length = 100)
-  @NotEmpty(message = "Campo 'name' obrigatorio")
-  private String name;
+  @NotEmpty(message = "Campo 'codigo' obrigatorio")
+  private String code;
 
-  @Column(length = 11)
-  @NotEmpty(message = "Campo 'cpf' obrigatorio")
-  private String cpf;
-
-  @Column(length = 200)
-  @NotEmpty(message = "Campo 'email' obrigatorio")
-  private String email;
-
+  // pending | approved | inprocess | inmediation | rejected | cancelled |
+  // refunded | chargedback
   @Column(length = 100)
-  @NotEmpty(message = "Campo 'born_date' obrigatorio")
-  private String born_date;
+  @NotEmpty(message = "Campo 'status' obrigatorio")
+  private String status;
+
+  @Column(length = 5000, columnDefinition = "Text")
+  private String qr;
+
+  @Column(precision = 20, scale = 2)
+  private double total;
 
   //
 
   @JsonIgnore
-  @OneToMany(mappedBy = "customer")
+  @OneToMany(mappedBy = "payment")
   private Set<Appointment> appointments;
-
-  @JsonIgnore
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "address_id", referencedColumnName = "id")
-  private Address address;
 
 }

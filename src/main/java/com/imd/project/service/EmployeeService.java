@@ -7,9 +7,9 @@ import com.imd.project.model.Employee;
 
 @Service
 public interface EmployeeService {
-  public Employee save(Employee curso);
+  public Employee save(Employee item);
 
-  public void delete(Employee curso);
+  public void delete(Employee item);
 
   public Employee getOneById(Integer id);
 

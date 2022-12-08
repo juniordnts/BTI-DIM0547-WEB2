@@ -23,12 +23,16 @@ import org.springframework.http.HttpStatus;
 
 import com.imd.project.dto.AppointmentDTO;
 import com.imd.project.model.Appointment;
+import com.imd.project.model.Coupon;
 import com.imd.project.model.Customer;
 import com.imd.project.model.Employee;
+import com.imd.project.model.Payment;
 import com.imd.project.model.Procedure;
 import com.imd.project.service.AppointmentService;
+import com.imd.project.service.CouponService;
 import com.imd.project.service.CustomerService;
 import com.imd.project.service.EmployeeService;
+import com.imd.project.service.PaymentService;
 import com.imd.project.service.ProcedureService;
 
 @RestController
@@ -46,6 +50,12 @@ public class AppointmentController {
 
   @Autowired
   ProcedureService procedureModelService;
+
+  @Autowired
+  CouponService couponModelService;
+
+  @Autowired
+  PaymentService paymentModelService;
 
   //
 
@@ -79,6 +89,7 @@ public class AppointmentController {
       throw new ResponseStatusException(
           HttpStatus.NOT_FOUND,
           "Customer não encontrado");
+
     Employee employeeFound = employeeModelService.getOneById(item.getEmployee());
     if (employeeFound == null)
       throw new ResponseStatusException(
@@ -89,6 +100,7 @@ public class AppointmentController {
     newItem.setEmployee(employeeFound);
 
     List<Procedure> newProcedureList = new ArrayList<Procedure>();
+    double productTotal = 0.00;
 
     for (Integer procedureId : item.getProcedures()) {
       Procedure procedureFound = procedureModelService.getOneById(procedureId);
@@ -98,7 +110,27 @@ public class AppointmentController {
             "Procedure não encontrado");
 
       newProcedureList.add(procedureFound);
+      productTotal += procedureFound.getPrice();
     }
+
+    if (item.getCoupon() != null) {
+      Coupon couponFound = couponModelService.getOneById(item.getCoupon());
+      if (couponFound == null)
+        throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Cupom não encontrado");
+
+      newItem.setCoupon(couponFound);
+      productTotal = (double) productTotal - Math.round(productTotal * (couponFound.getDiscount() / 100));
+    }
+
+    Payment newPayment = new Payment();
+
+    newPayment.setCode("Manual");
+    newPayment.setStatus("pending");
+    newPayment.setTotal(productTotal);
+
+    paymentModelService.save(newPayment, customerFound);
 
     newItem.setProcedures(new HashSet<>(newProcedureList));
 

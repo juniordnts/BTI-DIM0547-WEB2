@@ -15,5 +15,7 @@ public class CustomerDTO {
   private String cpf;
   @NonNull
   private String born_date;
+  @NonNull
+  private String email;
   private Integer address;
 }

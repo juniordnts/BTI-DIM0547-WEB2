@@ -7,9 +7,9 @@ import com.imd.project.model.Appointment;
 
 @Service
 public interface AppointmentService {
-  public Appointment save(Appointment curso);
+  public Appointment save(Appointment item);
 
-  public void delete(Appointment curso);
+  public void delete(Appointment item);
 
   public Appointment getOneById(Integer id);
 

@@ -7,9 +7,9 @@ import com.imd.project.model.Procedure;
 
 @Service
 public interface ProcedureService {
-  public Procedure save(Procedure curso);
+  public Procedure save(Procedure item);
 
-  public void delete(Procedure curso);
+  public void delete(Procedure item);
 
   public Procedure getOneById(Integer id);
 

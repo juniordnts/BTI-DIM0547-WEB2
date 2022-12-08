@@ -13,5 +13,6 @@ public class AppointmentDTO {
   private String date;
   private Integer customer;
   private Integer employee;
+  private Integer coupon;
   private List<Integer> procedures;
 }

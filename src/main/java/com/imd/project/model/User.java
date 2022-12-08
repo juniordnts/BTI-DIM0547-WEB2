@@ -36,4 +36,8 @@ public class User {
   @Column
   private boolean admin;
 
+  public boolean isAdmin() {
+    return this.admin;
+  }
+
 }
